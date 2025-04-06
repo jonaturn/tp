@@ -3,9 +3,8 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.commands.AuthenticateCommand.MESSAGE_FAILURE;
-import static seedu.address.logic.commands.AuthenticateCommand.MESSAGE_SUCCESS;
-import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_BLANK_FIELDS;
-import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_WHITESPACE;
+import static seedu.address.logic.commands.AuthenticateCommand.MESSAGE_SUCCESS_ADMIN;
+import static seedu.address.logic.commands.AuthenticateCommand.MESSAGE_SUCCESS_IT;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,13 +34,11 @@ public class AuthenticateCommandTest {
     public void execute_validAdminCredentials_success() {
         String reply;
         try {
-            logic.addNewUser(new Account("Admin", "Admin@123"));
             reply = new AuthenticateCommand("Admin", "Admin@123").authenticateUser(logic);
-        } catch (AuthenticateException | IOException | CreateUserException e) {
+        } catch (AuthenticateException e) {
             reply = e.getMessage();
         }
-
-        assertEquals(MESSAGE_SUCCESS, reply);
+        assertEquals(MESSAGE_SUCCESS_ADMIN, reply);
     }
 
     @Test
@@ -66,7 +63,7 @@ public class AuthenticateCommandTest {
         assertEquals(MESSAGE_FAILURE, reply);
     }
 
-    /*@Test
+    @Test
     public void execute_validItCredentials_success() {
         String reply;
         try {
@@ -97,7 +94,7 @@ public class AuthenticateCommandTest {
             reply = e.getMessage();
         }
         assertEquals(MESSAGE_FAILURE, reply);
-    }*/
+    }
 
     @Test
     public void nullCredentials_throwsAuthenticationException() {
@@ -165,22 +162,14 @@ public class AuthenticateCommandTest {
         }
 
         @Override
-        public String addNewUser(Account toAdd) throws CreateUserException, IOException {
-            if (toAdd.getUsername().contains(" ") || toAdd.getPassword().contains(" ")) {
-                throw new CreateUserException(MESSAGE_WHITESPACE);
-            }
-
-            if (toAdd.getUsername().isBlank() || toAdd.getPassword().isBlank()) {
-                throw new CreateUserException(MESSAGE_BLANK_FIELDS);
-            }
-
-            return MESSAGE_SUCCESS;
+        public String addNewUser(Account account) throws CreateUserException, IOException {
+            return "";
         }
 
         @Override
         public ArrayList<Account> getAccountList() {
             ArrayList<Account> accounts = new ArrayList<>();
-            accounts.add(new Account("Admin", "Admin@123"));
+            accounts.add(new Account("ITstaff", "ITstaff@123"));
             return accounts;
         }
     }

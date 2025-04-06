@@ -77,13 +77,8 @@ public class AddressBookParser {
         EditCommand.COMMAND_WORD,
         DeleteCommand.COMMAND_WORD,
         ClearCommand.COMMAND_WORD,
+        RegisterCommand.COMMAND_WORD,
         ImportCommand.COMMAND_WORD,
-        LogOutCommand.COMMAND_WORD,
-        ListCommand.COMMAND_WORD,
-        FindCommand.COMMAND_WORD,
-        FindByCommand.COMMAND_WORD,
-        SetStatusCommand.COMMAND_WORD,
-        FilterStatusCommand.COMMAND_WORD
     };
 
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);

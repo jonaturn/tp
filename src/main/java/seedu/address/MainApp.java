@@ -15,6 +15,7 @@ import seedu.address.commons.util.ConfigUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
+import seedu.address.model.Account;
 import seedu.address.model.AccountBook;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -100,14 +101,16 @@ public class MainApp extends Application {
             accountBookOptional = storage.readAccountBook();
             if (!accountBookOptional.isPresent()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " with an empty AccountBook.");
+                        + " populated with a default IT staff account.");
             }
             AccountBook defaultAccountBook = new AccountBook();
+            defaultAccountBook.addAccount(new Account("ITstaff", "ITstaff123"));
             initialAccountBook = accountBookOptional.orElse(defaultAccountBook);
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAccountBookFilePath() + " could not be loaded."
-                    + " Will be starting empty account book.");
+                    + " Will be starting with a default IT staff account.");
             initialAccountBook = new AccountBook();
+            initialAccountBook.addAccount(new Account("ITstaff", "ITstaff123"));
         }
 
         return new ModelManager(initialData, userPrefs, initialAccountBook);

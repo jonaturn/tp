@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.commons.util.HasherUtil.hashPassword;
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -12,7 +14,7 @@ import seedu.address.model.Account;
  * Authenticates the user
  */
 public class AuthenticateCommand {
-    public static final String MESSAGE_SUCCESS = "Authenticated User";
+    public static final String MESSAGE_SUCCESS_ADMIN = "Authenticated User: Admin Logged In.";
     public static final String MESSAGE_SUCCESS_IT = "Authenticated User: IT Staff Logged In.";
     public static final String MESSAGE_FAILURE = "Login Failed. Invalid username or password.";
 
@@ -46,27 +48,28 @@ public class AuthenticateCommand {
 
         ArrayList<Account> accountsIT = retrieveAccount(logic);
 
-        /*if (username.equals(usernameInput)
+        if (username.equals(usernameInput)
                 && password.equals(hashPassword(passwordInput, salt))) {
             //change logicManager isLoggedIn to true
             logger.info("Logged Admin in.");
             logic.logUserIn("Admin");
             return MESSAGE_SUCCESS_ADMIN;
-        } else {*/
-        //IT staff login
-        if (!accountsIT.isEmpty()) {
-            for (Account account : accountsIT) {
-                if (account.getUsername().equals(usernameInput) && account.getPassword().equals(passwordInput)) {
-                    logger.info(account.getUsername() + " " + account.getPassword());
-                    logic.logUserIn("Admin");
-                    return MESSAGE_SUCCESS;
+        } else {
+            //IT staff login
+            if (!accountsIT.isEmpty()) {
+                for (Account account : accountsIT) {
+                    if (account.getUsername().equals(usernameInput) && account.getPassword().equals(passwordInput)) {
+                        logger.info(account.getUsername() + " " + account.getPassword());
+                        logic.logUserIn("IT");
+                        return MESSAGE_SUCCESS_IT;
+                    }
                 }
             }
+            //return error message on ui
+            throw new AuthenticateException(MESSAGE_FAILURE);
         }
-        //return error message on ui
-        throw new AuthenticateException(MESSAGE_FAILURE);
-    }
 
+    }
 
     /**
      * Retrieves account list from logic

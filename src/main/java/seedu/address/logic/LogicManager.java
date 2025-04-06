@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_BLANK_FIELDS;
+import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_DUPLICATE_USERNAME;
 import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_SUCCESS;
 import static seedu.address.logic.commands.CreateUserCommand.MESSAGE_WHITESPACE;
 
@@ -17,7 +18,6 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.LogOutCommand;
 import seedu.address.logic.commands.LoginCommand;
-import seedu.address.logic.commands.RegisterCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.commands.exceptions.CreateUserException;
 import seedu.address.logic.commands.exceptions.InvalidAccessRightsException;
@@ -66,13 +66,12 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         if (!isLoggedIn && !commandText.equals(LoginCommand.COMMAND_WORD)
-                && !commandText.equals(HelpCommand.COMMAND_WORD)
-                && !commandText.equals(RegisterCommand.COMMAND_WORD)) {
+                && !commandText.equals(HelpCommand.COMMAND_WORD)) {
             throw new CommandException("Please Login First.");
         }
 
         if (isLoggedIn && commandText.equals(LoginCommand.COMMAND_WORD)) {
-            throw new CommandException("Already logged in.");
+            throw new CommandException("Already logged in. Logout and login to change user.");
         }
 
         if (commandText.equals(LogOutCommand.COMMAND_WORD)) {
@@ -154,8 +153,8 @@ public class LogicManager implements Logic {
             throw new CreateUserException(MESSAGE_BLANK_FIELDS);
         }
 
-        if (!model.getAccountBook().getAccountList().isEmpty()) {
-            throw new CreateUserException("You already have an account.");
+        if (model.hasAccount(toAdd) || toAdd.getUsername().equals("Admin")) {
+            throw new CreateUserException(MESSAGE_DUPLICATE_USERNAME);
         }
 
         model.addAccount(toAdd);
