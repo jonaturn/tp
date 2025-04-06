@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import seedu.address.model.person.exceptions.DuplicateAccountException;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
 
 /**
  * A list of accounts that enforces uniqueness between its elements and does not allow nulls.
@@ -42,7 +41,7 @@ public class UniqueAccountsList implements Iterable<Account> {
     public void add(Account toAdd) {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
-            throw new DuplicatePersonException();
+            throw new DuplicateAccountException();
         }
         internalList.add(toAdd);
     }

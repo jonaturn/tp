@@ -65,4 +65,12 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getAddressBookFilePath());
     }
 
+    @Test
+    public void getAccountBookFilePath() {
+        JsonAddressBookStorage addressBookStorage = new JsonAddressBookStorage(getTempFilePath("ab"));
+        JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
+        JsonAccountStorage jsonAccountStorage = new JsonAccountStorage(getTempFilePath("acc"));
+        StorageManager storageManager1 = new StorageManager(addressBookStorage, userPrefsStorage, jsonAccountStorage);
+        assertNotNull(storageManager1.getAccountBookFilePath());
+    }
 }
