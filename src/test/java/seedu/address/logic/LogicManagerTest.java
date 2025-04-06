@@ -26,8 +26,10 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.exceptions.CreateUserException;
 import seedu.address.logic.commands.exceptions.InvalidAccessRightsException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Account;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -92,6 +94,16 @@ public class LogicManagerTest {
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    }
+
+    @Test
+    public void test_addBlankUser_throwsCreateUserException() {
+        assertThrows(CreateUserException.class, () -> logic.addNewUser(new Account("", "Admin123")));
+    }
+
+    @Test
+    public void test_addWhiteSpaceUser_throwsCreateUserException() {
+        assertThrows(CreateUserException.class, () -> logic.addNewUser(new Account("Admin 1", "Admin123")));
     }
 
     /**
